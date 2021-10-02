@@ -1,0 +1,47 @@
+body {
+  background-color: #1c1c1c;
+  text-align: center;
+}
+
+.timetable {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  grid-gap: 10px 3px;
+  grid-auto-flow: row;
+  justify-items: stretch;
+  justify-content: center;
+  align-items: stretch;
+  align-content: center;
+  margin-bottom: 5%;
+}
+
+.block {
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  background-color: #00F;
+  padding: 20px 0px;
+  border: 5px solid #FFF;
+}
+
+.chosen {
+  background-color: #0F0;
+}
+
+.conflict {
+  background-color: #F00;
+}
+
+.time {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  background-color: #FFF;
+  color: #000;
+}
