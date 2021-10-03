@@ -1,11 +1,11 @@
-//import subjs from './subjects.json'
-
-const subjects = [
+/*const subjects = [
   ["Аналитична механика(л)", 1, 10, 13],
   ["Аналитична механика(с)", 2, 14, 18],
   ["Анализ2(с)", 1, 11, 13],
   ["Анализ3(л)", 1, 12, 16]
-]
+];*/
+
+console.log(subjects);
 
 const days = [
   "Понеделник",
@@ -28,6 +28,8 @@ const chosen = [];
 subjects.forEach((item, i) => {
   chosen.push([]);
 });
+
+const chosenList = document.getElementById("chosenList");
 
 
 function createTable(){
@@ -94,7 +96,11 @@ function main() {
 
   const search = document.getElementById("search");
   search.addEventListener('change', (event) => {
-    listLike(event.target.value);
+    listLike(search.value);
+  });
+  const go = document.getElementById("go");
+  go.addEventListener('click', (event) => {
+    listLike(search.value);
   });
 }
 
@@ -103,16 +109,19 @@ function listLike(str) {
   searchList.replaceChildren();
 
   subjects.forEach((subject, index) => {
-    if(subject[0].toLowerCase().includes(str.toLowerCase())){
+    if(subject[0].toLowerCase().includes(str.toLowerCase()) && !document.getElementById(`chosenListSubjectId-${index}`)){
       const subjNode = document.createElement("div");
       subjNode.classList.add("choice");
+      subjNode.id = `possibleListSubjectId-${index}`;
       subjNode.appendChild(document.createTextNode(`${subject[0]}, ${days[subject[1]-1]} ${subject[2]}-${subject[3]}`));
 
       subjNode.setAttribute("subjectId", index);
       subjNode.addEventListener("click", (event) => {
         const actualIndex = event.target.getAttribute("subjectId");
-        if(chosen[actualIndex].length == 0) choose(actualIndex);
-        else unchoose(actualIndex);
+        choose(actualIndex);
+        searchList.removeChild(event.target);
+        //if(chosen[actualIndex].length == 0) choose(actualIndex);
+        //else unchoose(actualIndex);
       });
 
       searchList.appendChild(subjNode);
@@ -123,6 +132,7 @@ function listLike(str) {
 
 function choose(index) {
   const chosenSubject = subjects[index];
+
   for(let j=chosenSubject[2]; j<chosenSubject[3];j++) {
     //-1 for day and -8 for hour
     const block = blocks[chosenSubject[1]-1][j-8];
@@ -139,6 +149,19 @@ function choose(index) {
     }
     else block.classList.add("chosen");
   }
+
+  const selNode = document.createElement("div");
+  selNode.classList.add("choice");
+  selNode.appendChild(document.createTextNode(`${chosenSubject[0]}, ${days[chosenSubject[1]-1]} ${chosenSubject[2]}-${chosenSubject[3]}`));
+  selNode.setAttribute("subjectId", index);
+  selNode.id = `chosenListSubjectId-${index}`;
+  selNode.addEventListener("click", (event) => {
+    const actualIndex = event.target.getAttribute("subjectId");
+    unchoose(actualIndex);
+  });
+  chosenList.appendChild(selNode);
+
+  //searchList.removeChild(document.getElementsByTagName(`possibleListSubjectId-${index}`));
 }
 
 function unchoose(index){
@@ -152,6 +175,10 @@ function unchoose(index){
       }
   });
   chosen[index] = [];
+
+  const nodeToDelInChosenList = document.getElementById(`chosenListSubjectId-${index}`);
+  chosenList.removeChild(nodeToDelInChosenList);
+  document.getElementById("go").click();
 }
 
 main();

@@ -5,22 +5,41 @@
     <meta charset="utf-8">
     <title>Timetable</title>
     <link rel="stylesheet" href="timetable.css">
-    <script src="timetable.js" async></script>
+    <script type="text/javascript" src="subjects.js" async></script>
+    <script type="text/javascript" src="timetable.js" async></script>
   </head>
 
   <body>
     <div id="timetable">
-
     </div>
 
-    <div id="chosenList">
+    <div class="lists">
+      <!--<div class="listContainer">
+        <h2>Търси</h2>
+        <input type="text" name="search" id="search" value="">
+        <div id="searchList">
+        </div>
+      </div>
 
+
+      <div class="listContainer">
+        <h2>Избрани</h2>
+        <input type="text" style="opacity: 0;">
+        <div id="chosenList">
+        </div>
+      </div>-->
+      <h2>Търси</h2>
+      <h2>Избрани</h2>
+      <div class="">
+        <input type="text" name="search" id="search" value="" style="width: 50%">
+        <input type="button" name="go" id="go" value="давай">
+      </div>
+      <input type="text" style="opacity: 0;">
+
+      <div id="searchList"></div>
+      <div id="chosenList"></div>
     </div>
 
-    <input type="text" name="search" id="search" value="">
-    <div id="searchList">
-
-    </div>
   </body>
 
 </html>
