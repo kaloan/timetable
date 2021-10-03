@@ -3,7 +3,8 @@
 const subjects = [
   ["Аналитична механика(л)", 1, 10, 13],
   ["Аналитична механика(с)", 2, 14, 18],
-  ["ASDASD", 1, 12, 16]
+  ["Анализ2(с)", 1, 11, 13],
+  ["Анализ3(л)", 1, 12, 16]
 ]
 
 const days = [
@@ -20,8 +21,14 @@ let conflicts = [];
 
 let blocks = [];
 
-const chosen = Array(subjects.length);
-chosen.fill([]);
+//NEVER USE FILL!!!!! COPIES REFERENCE, NOT VALUE!!! JS IS RETARDED
+//const chosen = Array(subjects.length);
+//chosen.fill([]);
+const chosen = [];
+subjects.forEach((item, i) => {
+  chosen.push([]);
+});
+
 
 function createTable(){
   const timetable = document.getElementById("timetable");
@@ -89,9 +96,6 @@ function main() {
   search.addEventListener('change', (event) => {
     listLike(event.target.value);
   });
-  //let chosen = new Array(subjects.length).fill(false);
-  //let chosen = [true, false, true];
-  //colorify(blocks, chosen);
 }
 
 function listLike(str) {
@@ -103,14 +107,14 @@ function listLike(str) {
       const subjNode = document.createElement("div");
       subjNode.classList.add("choice");
       subjNode.appendChild(document.createTextNode(`${subject[0]}, ${days[subject[1]-1]} ${subject[2]}-${subject[3]}`));
+
       subjNode.setAttribute("subjectId", index);
       subjNode.addEventListener("click", (event) => {
-        console.log(event);
         const actualIndex = event.target.getAttribute("subjectId");
-        console.log(actualIndex);
         if(chosen[actualIndex].length == 0) choose(actualIndex);
         else unchoose(actualIndex);
       });
+
       searchList.appendChild(subjNode);
     }
   });
@@ -119,17 +123,16 @@ function listLike(str) {
 
 function choose(index) {
   const chosenSubject = subjects[index];
-  for(let j=chosenSubject[2]; j<chosenSubject[3];j++){
+  for(let j=chosenSubject[2]; j<chosenSubject[3];j++) {
     //-1 for day and -8 for hour
     const block = blocks[chosenSubject[1]-1][j-8];
     const subjNode = document.createElement("div");
     subjNode.classList.add("subj");
-    const p = document.createElement("p");
-
     subjNode.appendChild(document.createTextNode(chosenSubject[0]));
     block.appendChild(subjNode);
+
     chosen[index].push(subjNode);
-    console.log(block.childNodes);
+
     if(block.childNodes.length != 1){
       block.classList.add("conflict");
       conflicts.push({day: days[chosenSubject[1]-1], hour: chosenSubject[2]});
@@ -139,6 +142,7 @@ function choose(index) {
 }
 
 function unchoose(index){
+  console.log(chosen);
   chosen[index].forEach((item, i) => {
       const parent = item.parentNode;
       if(parent){
@@ -149,28 +153,5 @@ function unchoose(index){
   });
   chosen[index] = [];
 }
-
-/*function colorify(blocks, chosen) {
-  conflicts = [];
-  let chosenSubs = subjects.filter((item, index) => chosen[index]);
-  chosenSubs.forEach((item, i) => {
-    for(let j=item[2]; j<item[3];j++){
-      //-1 for day and -8 for hour
-      const block = blocks[item[1]-1][j-8];
-      const subjNode = document.createElement("div");
-      subjNode.classList.add("subj");
-      const p = document.createElement("p");
-
-      subjNode.appendChild(document.createTextNode(item[0]));
-      block.appendChild(subjNode);
-      if(block.classList.contains("chosen")){
-        block.classList.add("conflict");
-        conflicts.push({day: days[item[1]-1], hour: item[2]});
-      }
-      else block.classList.add("chosen");
-    }
-  });
-  console.log(conflicts);
-}*/
 
 main();
