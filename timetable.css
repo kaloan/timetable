@@ -1,3 +1,13 @@
+
+
+:root {
+  --col1: #33c;
+  --col2: #c33;
+  --col3: #fff;
+  --col3transp: #fff1;
+  --colbg: #1c1c1c;
+}
+
 body {
   background-color: #1c1c1c;
   text-align: center;
@@ -16,22 +26,34 @@ div {
 #timetable {
   display: grid;
   grid-template-columns: repeat(15, 1fr);
-  grid-gap: 10px 3px;
   grid-auto-flow: row;
+  grid-gap: 10px 3px;
   justify-items: stretch;
   justify-content: center;
   align-items: stretch;
   align-content: center;
-  margin-bottom: 5%;
+  margin-bottom: 3%;
+}
+
+#searchList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-flow: row;
+  grid-gap: 10px 20px;
+  justify-items: stretch;
+  justify-content: center;
+  align-items: stretch;
+  align-content: center;
+  margin: 5% auto;
 }
 
 .block {
-  height: 50px;
-  color: #FFF;
+  height: 65px;
+  color: var(--col3);
   flex-direction: column;
-  background-color: #1c1c1c;
+  background-color: var(--colbg);
   padding: 20px 0px;
-  border: 5px solid #FFF;
+  border: 5px solid var(--col3transp);
 }
 
 /*.block > div {
@@ -39,17 +61,27 @@ div {
 }*/
 
 .chosen {
-  background-color: #3C3;
+  border-color: var(--col3);
+  background-color: var(--col1);
+}
+
+.choice {
+  color: var(--colbg);
+  background-color: var(--col3);
+}
+
+.choice:hover {
+  cursor: pointer;
 }
 
 @keyframes blink{
-  0%,100% {border-color: #FFF;}
-  50% {border-color: #C33;}
+  0%,100% {border-color: var(--col3);}
+  50% {border-color: var(--col2);}
 }
 .conflict {
-  background-color: #C33;
+  background-color: var(--col2);
   animation-name: blink;
-  animation-duration: 1s;
+  animation-duration: 2s;
   animation-iteration-count: infinite;
   animation-direction: alternate;
   animation-fill-mode: forwards;
@@ -57,8 +89,8 @@ div {
 }
 
 .time {
-  background-color: #FFF;
-  color: #1c1c1c;
+  background-color: var(--col3);
+  color: var(--colbg);
 }
 
 .subj {
@@ -66,6 +98,6 @@ div {
 }
 
 .subj + .subj {
-  background-color: #C33;
-  border-top: 2px solid #FFF;
+  background-color: var(--col2);
+  border-top: 2px solid var(--col3);
 }

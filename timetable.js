@@ -20,7 +20,8 @@ let conflicts = [];
 
 let blocks = [];
 
-
+const chosen = Array(subjects.length);
+chosen.fill([]);
 
 function createTable(){
   const timetable = document.getElementById("timetable");
@@ -40,7 +41,7 @@ function createTable(){
     timetable.appendChild(hour);
   }
 
-  for(let i=1; i<=7; i++) {
+  for(let i=1; i<=6; i++) {
     let arr = [];
 
     //Fill days on left side
@@ -89,26 +90,67 @@ function main() {
     listLike(event.target.value);
   });
   //let chosen = new Array(subjects.length).fill(false);
-  let chosen = [true, false, true];
-  colorify(blocks, chosen);
+  //let chosen = [true, false, true];
+  //colorify(blocks, chosen);
 }
 
 function listLike(str) {
   const searchList = document.getElementById("searchList");
   searchList.replaceChildren();
 
-  const filtered = subjects.filter(subject => subject[0].toLowerCase().includes(str.toLowerCase()));
-  filtered.forEach((item, i) => {
-    const subjNode = document.createElement("div");
-
-    searchList.appendChild();
+  subjects.forEach((subject, index) => {
+    if(subject[0].toLowerCase().includes(str.toLowerCase())){
+      const subjNode = document.createElement("div");
+      subjNode.classList.add("choice");
+      subjNode.appendChild(document.createTextNode(`${subject[0]}, ${days[subject[1]-1]} ${subject[2]}-${subject[3]}`));
+      subjNode.setAttribute("subjectId", index);
+      subjNode.addEventListener("click", (event) => {
+        console.log(event);
+        const actualIndex = event.target.getAttribute("subjectId");
+        console.log(actualIndex);
+        if(chosen[actualIndex].length == 0) choose(actualIndex);
+        else unchoose(actualIndex);
+      });
+      searchList.appendChild(subjNode);
+    }
   });
-
-  console.log(filtered);
 
 }
 
-function colorify(blocks, chosen) {
+function choose(index) {
+  const chosenSubject = subjects[index];
+  for(let j=chosenSubject[2]; j<chosenSubject[3];j++){
+    //-1 for day and -8 for hour
+    const block = blocks[chosenSubject[1]-1][j-8];
+    const subjNode = document.createElement("div");
+    subjNode.classList.add("subj");
+    const p = document.createElement("p");
+
+    subjNode.appendChild(document.createTextNode(chosenSubject[0]));
+    block.appendChild(subjNode);
+    chosen[index].push(subjNode);
+    console.log(block.childNodes);
+    if(block.childNodes.length != 1){
+      block.classList.add("conflict");
+      conflicts.push({day: days[chosenSubject[1]-1], hour: chosenSubject[2]});
+    }
+    else block.classList.add("chosen");
+  }
+}
+
+function unchoose(index){
+  chosen[index].forEach((item, i) => {
+      const parent = item.parentNode;
+      if(parent){
+        if(parent.childNodes.length == 2) parent.classList.remove("conflict");
+        else if (parent.childNodes.length == 1) parent.classList.remove("chosen");
+        item.parentNode.removeChild(item);
+      }
+  });
+  chosen[index] = [];
+}
+
+/*function colorify(blocks, chosen) {
   conflicts = [];
   let chosenSubs = subjects.filter((item, index) => chosen[index]);
   chosenSubs.forEach((item, i) => {
@@ -129,6 +171,6 @@ function colorify(blocks, chosen) {
     }
   });
   console.log(conflicts);
-}
+}*/
 
 main();
