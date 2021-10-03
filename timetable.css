@@ -1,9 +1,19 @@
 body {
   background-color: #1c1c1c;
   text-align: center;
+  font-size: 18px;
+  text-align: center;
 }
 
-.timetable {
+div {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+}
+
+#timetable {
   display: grid;
   grid-template-columns: repeat(15, 1fr);
   grid-gap: 10px 3px;
@@ -16,32 +26,46 @@ body {
 }
 
 .block {
-  height: 40px;
-  display: flex;
+  height: 50px;
+  color: #FFF;
   flex-direction: column;
-  justify-content: center;
-  justify-items: center;
-  align-items: center;
-  align-content: center;
-  background-color: #00F;
+  background-color: #1c1c1c;
   padding: 20px 0px;
   border: 5px solid #FFF;
 }
 
+/*.block > div {
+  background-color: #3C3;
+}*/
+
 .chosen {
-  background-color: #0F0;
+  background-color: #3C3;
 }
 
+@keyframes blink{
+  0%,100% {border-color: #FFF;}
+  50% {border-color: #C33;}
+}
 .conflict {
-  background-color: #F00;
+  background-color: #C33;
+  animation-name: blink;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+  animation-timing-function: steps(1, end);
 }
 
 .time {
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-  justify-items: center;
   background-color: #FFF;
-  color: #000;
+  color: #1c1c1c;
+}
+
+.subj {
+
+}
+
+.subj + .subj {
+  background-color: #C33;
+  border-top: 2px solid #FFF;
 }
